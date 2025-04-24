@@ -1,0 +1,46 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'CloudFormation template for the DynamoDB HTTP Cache table'
+
+Parameters:
+  TableName:
+    Type: String
+    Default: 'http-cache'
+    Description: 'Name of the DynamoDB table'
+  ReadCapacityUnits:
+    Type: Number
+    Default: 5
+    Description: 'Read capacity units for the table'
+  WriteCapacityUnits:
+    Type: Number
+    Default: 5
+    Description: 'Write capacity units for the table'
+  TimeToLiveAttribute:
+    Type: String
+    Default: 'expires'
+    Description: 'TTL attribute name'
+
+Resources:
+  HttpCacheTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Ref TableName
+      AttributeDefinitions:
+        - AttributeName: key
+          AttributeType: S
+      KeySchema:
+        - AttributeName: key
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: !Ref ReadCapacityUnits
+        WriteCapacityUnits: !Ref WriteCapacityUnits
+      TimeToLiveSpecification:
+        AttributeName: !Ref TimeToLiveAttribute
+        Enabled: true
+
+Outputs:
+  TableName:
+    Description: 'Name of the DynamoDB table'
+    Value: !Ref HttpCacheTable
+  TableArn:
+    Description: 'ARN of the DynamoDB table'
+    Value: !GetAtt HttpCacheTable.Arn 

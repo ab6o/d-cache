@@ -1,13 +1,14 @@
 plugins {
     id 'java'
+    id 'java-library'
     id 'maven-publish'
-    id 'org.springframework.boot' version '3.2.3'
     id 'io.spring.dependency-management' version '1.1.4'
+    id 'org.springframework.boot' version '3.4.5' // or the latest version
 }
 
 group = 'com.coupang.dcache'
 version = '1.0.0'
-description = 'Library for caching HTTP responses in DynamoDB with configurable TTL'
+description = 'Library for caching data with configurable TTL'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -23,8 +24,9 @@ ext {
 }
 
 dependencies {
-    // AWS SDK v1 DynamoDB (for backward compatibility)
-    implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.12.261'
+    // Core dependencies
+    api 'com.google.guava:guava:33.0.0-jre'
+    api 'software.amazon.awssdk:dynamodb:2.24.0'
     
     // AWS SDK v2 DynamoDB
     implementation 'software.amazon.awssdk:dynamodb:2.20.145'
@@ -36,8 +38,10 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
 
     // Logging
-    implementation 'org.slf4j:slf4j-api:2.0.9'
+    implementation 'org.slf4j:slf4j-api:2.0.12'
     implementation 'ch.qos.logback:logback-classic:1.4.14'
+    implementation 'org.springframework.boot:spring-boot-starter'
+
 
     // Spring Framework
     implementation "org.springframework:spring-context:${springVersion}"
@@ -46,27 +50,47 @@ dependencies {
     implementation "org.springframework:spring-aspects:${springVersion}"
     implementation "org.springframework:spring-webmvc:${springVersion}"
 
-    // Spring Boot
-    implementation 'org.springframework.boot:spring-boot-starter'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-aop'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
     
     // Testing
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
-    testImplementation 'org.mockito:mockito-core:5.5.0'
-    testImplementation 'org.mockito:mockito-junit-jupiter:5.5.0'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation(platform('org.junit:junit-bom:5.10.2'))
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.10.0'
 }
 
-test {
+tasks.named('test') {
     useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+            pom {
+                name = project.name
+                description = project.description
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'https://opensource.org/licenses/MIT'
+                    }
+                }
+            }
         }
     }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs += ['-Xlint:unchecked', '-Xlint:deprecation']
 } 

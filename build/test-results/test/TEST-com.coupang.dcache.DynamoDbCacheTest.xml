@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.coupang.dcache.DynamoDbCacheTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2025-05-03T05:00:31.637Z" hostname="Anaragashas-iMac.local" time="0.836">
+  <properties/>
+  <testcase name="shouldPutAndGetValue()" classname="com.coupang.dcache.DynamoDbCacheTest" time="0.82"/>
+  <testcase name="shouldReturnEmptyWhenKeyNotFound()" classname="com.coupang.dcache.DynamoDbCacheTest" time="0.002"/>
+  <testcase name="shouldInvalidateAll()" classname="com.coupang.dcache.DynamoDbCacheTest" time="0.01"/>
+  <testcase name="shouldInvalidateKey()" classname="com.coupang.dcache.DynamoDbCacheTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

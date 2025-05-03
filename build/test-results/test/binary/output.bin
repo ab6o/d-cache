@@ -1,0 +1,3 @@
+•Standard Commons Logging discovery in action with spring-jcl: please remove commons-logging.jar from classpath in order to avoid potential conflicts
+n10:00:43.605 [Test worker] INFO com.coupang.dcache.HttpCache -- Waiting for table test-cache to be created...
+Ž10:00:43.607 [Test worker] INFO com.coupang.dcache.HttpCache -- Table test-cache created successfully with TTL enabled on 'expires' attribute

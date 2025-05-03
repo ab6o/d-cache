@@ -5,29 +5,27 @@ A Java library for caching data in DynamoDB with configurable TTL. While origina
 ## Requirements
 
 - Java 17 or higher
-- Maven 3.6 or higher
+- Gradle 8.0 or higher
 - AWS credentials configured in your environment
 
 ## Installation
 
-Add the following dependency to your pom.xml:
+Add the following dependency to your `build.gradle`:
 
-```xml
-<dependency>
-    <groupId>com.github.httpcache</groupId>
-    <artifactId>dynamodb-http-cache</artifactId>
-    <version>1.0.0</version>
-</dependency>
+```groovy
+dependencies {
+    implementation 'com.coupang.dcache:d-cache:1.0.0'
+}
 ```
 
 ## Building from Source
 
-Clone the repository and build with Maven:
+Clone the repository and build with Gradle:
 
 ```bash
-git clone https://github.com/yourusername/dynamodb-http-cache.git
-cd dynamodb-http-cache
-mvn clean install
+git clone https://github.com/yourusername/d-cache.git
+cd d-cache
+./gradlew build
 ```
 
 ## Running the Example
@@ -36,10 +34,10 @@ The library includes examples that demonstrate its functionality:
 
 ```bash
 # Direct API usage example
-mvn exec:java -Dexec.mainClass="com.github.httpcache.dynamodb.example.Example"
+./gradlew run -PmainClass=com.coupang.dcache.example.Example
 
 # Annotation-based caching example (requires Spring)
-mvn exec:java -Dexec.mainClass="com.github.httpcache.dynamodb.example.AnnotationExample"
+./gradlew run -PmainClass=com.coupang.dcache.example.AnnotationExample
 ```
 
 Note: You'll need AWS credentials configured in your environment to run the examples.
